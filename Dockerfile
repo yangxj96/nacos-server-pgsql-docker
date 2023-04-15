@@ -27,6 +27,7 @@ WORKDIR $BASE_DIR
 
 #  && yum update -y \
 RUN set -x \
+    && yum update -y \
     && yum install -y java-1.8.0-openjdk java-1.8.0-openjdk-devel wget iputils nc vim libcurl
 
 # copy nacos-server.tar.gz
@@ -34,7 +35,7 @@ COPY app/nacos-server-${NACOS_VERSION}.tar.gz /home
 
 # Unzip the file and delete unnecessary files
 RUN tar -xzvf /home/nacos-server-${NACOS_VERSION}.tar.gz -C /home \
-    && rm -rf /home/nacos-server-${NACOS_VERSION}.tar.gz /home/nacos/conf/*.properties /home/nacos/conf/*.example /home/nacos/conf/nacos-mysql.sql
+    && rm -rf /home/nacos-server-${NACOS_VERSION}.tar.gz /home/nacos/bin/* /home/nacos/conf/*.properties /home/nacos/conf/*.example /home/nacos/conf/nacos-mysql.sql
 
 # Synchronization time
 RUN yum autoremove -y wget \
@@ -54,8 +55,8 @@ RUN mkdir -p logs \
 	&& ln -sf /dev/stdout start.out \
 	&& ln -sf /dev/stderr start.out
 
-
-RUN chmod +x bin/docker-startup.sh
-
 EXPOSE 8848
-ENTRYPOINT ["bin/docker-startup.sh"]
+
+WORKDIR $BASE_DIR/bin
+
+ENTRYPOINT ["bash","docker-startup.sh"]
