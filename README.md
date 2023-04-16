@@ -1,5 +1,13 @@
 # Nacos V2.2.2版本的PostgreSQL版本
 
+因为未指定last版本,所以在pull的时候需要指定版本
+
+如:
+
+```shell
+docker pull yangxj96/nacos-service-pgsql:v2.2.2-2
+```
+
 ---
 [原版链接](https://hub.docker.com/r/nacos/nacos-server)
 
@@ -25,13 +33,13 @@
 
 # 二 docker-compose运行示例
 
-## docker-compose 文件
+### docker-compose 文件
 
 ```yaml
 version: "3"
 services:
-  yangxj96-nacos2:
-    image: yangxj96/nacos-service-pgsql:v2.2.2
+  nacos:
+    image: yangxj96/nacos-service-pgsql:v2.2.2-2
     container_name: nacos-pgsql
     privileged: true
     env_file:
@@ -41,7 +49,7 @@ services:
       - "/Nacos/logs/:/home/nacos/logs"
 ```
 
-## 环境变量文件
+### pgsql.env
 
 ```yaml
 PREFER_HOST_MODE=ip
@@ -62,5 +70,12 @@ PGSQL_PASSWORD=postgres
 - 修复docker 23.0.3 版本下无法运行
 - 添加 ```NACOS_AUTH_TOKEN,NACOS_AUTH_IDENTITY_KEY,NACOS_AUTH_IDENTITY_VALUE```的默认值(和官方默认值一样)
 
+## v2.2.2-2
+
+> 之前下载后使用大概1.1GB左右,本次更新主要为缩小镜像大小
+
+- 切换基础镜像到```amazoncorretto:8u362-alpine3.17-jre```,大小只有150M左右
+- 优化一些操作,缩小包内容
+- 整体镜像缩减到278.7MB
 
 #### 以上均为自己理解的内容,也许会是误打误撞搞出来的. 如有哪里不正确,请见谅

@@ -1,21 +1,22 @@
-FROM centos:7.9.2009
+FROM amazoncorretto:8u362-alpine3.17-jre
+
 MAINTAINER yangxj96 "yangxj96@126.com"
 
-# set environment
+# 设置环境变量
 ENV MODE="standalone" \
     PREFER_HOST_MODE="ip"\
     BASE_DIR="/home/nacos" \
     CLASSPATH=".:/home/nacos/conf:$CLASSPATH" \
     CLUSTER_CONF="/home/nacos/conf/cluster.conf" \
     FUNCTION_MODE="all" \
-    JAVA_HOME="/usr/lib/jvm/java-1.8.0-openjdk" \
+    JAVA_HOME="/usr/lib/jvm/java-8-amazon-corretto" \
     NACOS_USER="nacos" \
-    JAVA="/usr/lib/jvm/java-1.8.0-openjdk/bin/java" \
-    JVM_XMS="1g" \
-    JVM_XMX="1g" \
-    JVM_XMN="512m" \
-    JVM_MS="128m" \
-    JVM_MMS="320m" \
+    JAVA="/usr/lib/jvm/java-8-amazon-corretto/bin/java" \
+    JVM_XMS="512m" \
+    JVM_XMX="512m" \
+    JVM_XMN="256m" \
+    JVM_MS="64m" \
+    JVM_MMS="160m" \
     NACOS_DEBUG="n" \
     TOMCAT_ACCESSLOG_ENABLED="false" \
     TIME_ZONE="Asia/Shanghai"
@@ -25,30 +26,25 @@ ARG HOT_FIX_FLAG=""
 
 WORKDIR $BASE_DIR
 
-#  && yum update -y \
-RUN set -x \
-    && yum update -y \
-    && yum install -y java-1.8.0-openjdk java-1.8.0-openjdk-devel wget iputils nc vim libcurl
+# 添加必备环境变量
+RUN apk add --no-cache openssl ncurses-libs libstdc++
 
-# copy nacos-server.tar.gz
-COPY app/nacos-server-${NACOS_VERSION}.tar.gz /home
+# 添加nacos文件,
+# 必须使用ADD 是用COPY后在删除.tar.gz文件,镜像大小不会被删除,无缘无故多了.tar.gz同等大小的的镜像空间,暂不了解为什么
+# 但是使用ADD会自动解压文件.不会造成多出的.tar.gz同样大小的空间
+ADD app/nacos-server-${NACOS_VERSION}.tar.gz /home
+RUN rm -rf /home/nacos/bin/* /home/nacos/conf/*.properties /home/nacos/conf/*.example /home/nacos/conf/*.sql
 
-# Unzip the file and delete unnecessary files
-RUN tar -xzvf /home/nacos-server-${NACOS_VERSION}.tar.gz -C /home \
-    && rm -rf /home/nacos-server-${NACOS_VERSION}.tar.gz /home/nacos/bin/* /home/nacos/conf/*.properties /home/nacos/conf/*.example /home/nacos/conf/nacos-mysql.sql
+# 设置时间同步
+RUN ln -snf /usr/share/zoneinfo/$TIME_ZONE /etc/localtime && echo $TIME_ZONE > /etc/timezone
 
-# Synchronization time
-RUN yum autoremove -y wget \
-    && ln -snf /usr/share/zoneinfo/$TIME_ZONE /etc/localtime && echo $TIME_ZONE > /etc/timezone \
-    && yum clean all
-
-# copy pgsql plugin
+# 复制插件
 COPY plugins/nacos-postgresql.jar /home/nacos/plugins/nacos-postgresql.jar
 
+# 添加运行脚本和默认配置脚本
 ADD bin/docker-startup.sh bin/docker-startup.sh
 ADD conf/application.properties conf/application.properties
 
-# set startup log dir
 RUN mkdir -p logs \
 	&& cd logs \
 	&& touch start.out \
@@ -59,4 +55,7 @@ EXPOSE 8848
 
 WORKDIR $BASE_DIR/bin
 
-ENTRYPOINT ["bash","docker-startup.sh"]
+RUN chmod +x docker-startup.sh
+
+ENTRYPOINT ["/bin/ash","docker-startup.sh"]
+
