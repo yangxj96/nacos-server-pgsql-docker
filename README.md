@@ -26,7 +26,7 @@ docker pull yangxj96/nacos-service-pgsql:v2.2.2-2
 # 一 新增的环境变量
 
 | 变量名            |    说明    | 示例                                                       |
-|:---------------|:--------:|----------------------------------------------------------|
+|:---------------|:--------|:----------------------------------------------------------|
 | PGSQL_URL      | JDBC URL | jdbc:postgresql://localhost:5432/db?currentSchema=schema |
 | PGSQL_USERNAME |  数据库用户名  | postgres                                                 |
 | PGSQL_PASSWORD |  数据库密码   | postgres                                                 |
