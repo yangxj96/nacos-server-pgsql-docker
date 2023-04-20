@@ -11,7 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-set -x
+#set -x
 export CUSTOM_SEARCH_NAMES="application"
 export CUSTOM_SEARCH_LOCATIONS=file:${BASE_DIR}/conf/
 export MEMBER_LIST=""
@@ -101,4 +101,5 @@ JAVA_OPT="${JAVA_OPT} --logging.config=${BASE_DIR}/conf/nacos-logback.xml"
 JAVA_OPT="${JAVA_OPT} --server.max-http-header-size=524288"
 
 echo "Nacos is starting, you can docker logs your container"
+echo "JAVA_OPT:${JAVA_OPT}"
 exec $JAVA ${JAVA_OPT}
