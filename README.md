@@ -1,13 +1,5 @@
 # Nacos 的PostgreSQL版本
 
-因为未指定last版本,所以在pull的时候需要指定版本
-
-如:
-
-```shell
-docker pull yangxj96/nacos-server-pgsql:v2.2.3
-```
-
 ---
 [原版链接](https://hub.docker.com/r/nacos/nacos-server)
 
