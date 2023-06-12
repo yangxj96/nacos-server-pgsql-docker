@@ -27,14 +27,16 @@ ARG HOT_FIX_FLAG=""
 WORKDIR $BASE_DIR
 
 # 添加必备环境变量
-RUN apk add --no-cache openssl ncurses-libs libstdc++
+RUN apk add --no-cache openssl ncurses-libs libstdc++ curl
 
 # 添加nacos文件,
 # 必须使用ADD 是用COPY后在删除.tar.gz文件,镜像大小不会被删除,无缘无故多了.tar.gz同等大小的的镜像空间,暂不了解为什么
 # 但是使用ADD会自动解压文件.不会造成多出的.tar.gz同样大小的空间
 # 下载nacos的位置 https://github.com/alibaba/nacos/releases
-ADD app/nacos-server-${NACOS_VERSION}.tar.gz /home
-RUN rm -rf /home/nacos/bin/* /home/nacos/conf/*.properties /home/nacos/conf/*.example /home/nacos/conf/*.sql
+RUN curl -L https://github.com/alibaba/nacos/releases/download/2.2.3/nacos-server-2.2.3.tar.gz -o /home/nacos-server-2.2.3.tar.gz \
+    && tar -C /home -xzvf /home/nacos-server-2.2.3.tar.gz \
+    && rm -rf /home/nacos-server-2.2.3.tar.gz /home/nacos/bin/* /home/nacos/conf/*.properties /home/nacos/conf/*.example /home/nacos/conf/*.sql \
+    && ln -snf /usr/share/zoneinfo/$TIME_ZONE /etc/localtime && echo $TIME_ZONE > /etc/timezone
 
 # 设置时间同步
 RUN ln -snf /usr/share/zoneinfo/$TIME_ZONE /etc/localtime && echo $TIME_ZONE > /etc/timezone
