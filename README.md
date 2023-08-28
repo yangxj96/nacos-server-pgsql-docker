@@ -51,7 +51,20 @@ PGSQL_USERNAME=postgres
 PGSQL_PASSWORD=postgres
 ```
 
-## 三 更新日志
+
+
+## 三 常见问题
+
+- caused: Incorrect result size: expected 1, actual 2;
+
+> 目前发现这个问题应该是2.2.3版本的数据库有过改动,可以在[当前镜像构建脚本仓库链接](https://github.com/yangxj96/nacos-server-pgsql-docker)的schema文件夹下获取到pgsql的导入脚本,
+> 具体步骤为: 
+> 1. 在现有的nacos中把配置文件等内容导出,
+> 2. 清空nacos连接的数据库,
+> 3. 使用schema文件夹下的脚本进行初始化
+> 4. 导入配置文件等内容
+
+## 四 更新日志
 
 ### v2.2.3
 
