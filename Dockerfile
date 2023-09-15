@@ -54,7 +54,7 @@ RUN mkdir -p logs \
 	&& ln -sf /dev/stdout start.out \
 	&& ln -sf /dev/stderr start.out
 
-EXPOSE 8848
+EXPOSE 8848 9848 9849
 
 WORKDIR $BASE_DIR/bin
 
