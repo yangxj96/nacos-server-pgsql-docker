@@ -44,7 +44,7 @@ else
   fi
   JAVA_OPT="${JAVA_OPT} -XX:-OmitStackTraceInFastThrow -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=${BASE_DIR}/logs/java_heapdump.hprof"
   JAVA_OPT="${JAVA_OPT} -XX:-UseLargePages"
-  print_servers
+  #print_servers
 fi
 
 #===========================================================================================
