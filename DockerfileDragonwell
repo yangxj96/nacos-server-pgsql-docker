@@ -3,31 +3,25 @@ FROM alpine:20230901
 MAINTAINER yangxj96 "yangxj96@126.com"
 
 # 添加必备环境变量
-RUN apk add --no-cache openssl ncurses-libs libstdc++ curl
-
-RUN mkdir -p "/opt/alibaba"
+RUN apk add --no-cache openssl ncurses-libs libstdc++ curl && mkdir -p "/opt/alibaba"
 
 WORKDIR /opt/alibaba
 
 # 龙威jdk下载地址:https://github.com/dragonwell-project/dragonwell11/releases/
 # 因为直接下载的地址貌似有时效限制,所以只能自己去下载到本地,然后放到jdks文件夹中,然后进行构建
 ADD jdks/Alibaba_Dragonwell_Extended_11.0.20.17.8_x64_alpine-linux.tar.gz .
-RUN mv dragonwell-11.0.20.17+8-GA java-11-alibaba-dragonwell
 
 # 设置环境变量
-ENV JAVA_HOME="/opt/alibaba/java-11-alibaba-dragonwell"
-ENV PATH=$PATH:$JAVA_HOME/bin
-
-# 设置环境变量
-ENV MODE="standalone" \
+ENV JAVA_HOME="/opt/alibaba/dragonwell-11.0.20.17+8-GA" \
+    PATH=$PATH:$JAVA_HOME/bin \
+    MODE="standalone" \
     PREFER_HOST_MODE="ip"\
     BASE_DIR="/home/nacos" \
     CLASSPATH=".:/home/nacos/conf:$CLASSPATH" \
     CLUSTER_CONF="/home/nacos/conf/cluster.conf" \
     FUNCTION_MODE="all" \
-    JAVA_HOME="/opt/alibaba/java-11-alibaba-dragonwell" \
     NACOS_USER="nacos" \
-    JAVA="/opt/alibaba/java-11-alibaba-dragonwell/bin/java" \
+    JAVA="/opt/alibaba/dragonwell-11.0.20.17+8-GA/bin/java" \
     JVM_XMS="512m" \
     JVM_XMX="512m" \
     JVM_XMN="256m" \
@@ -38,7 +32,6 @@ ENV MODE="standalone" \
     TIME_ZONE="Asia/Shanghai"
 
 ARG NACOS_VERSION=2.2.3
-ARG HOT_FIX_FLAG=""
 
 WORKDIR $BASE_DIR
 
