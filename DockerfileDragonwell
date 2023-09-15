@@ -3,6 +3,9 @@ FROM alpine:20230901
 
 MAINTAINER yangxj96 "yangxj96@126.com"
 
+# 添加必备环境变量
+RUN apk add --no-cache openssl ncurses-libs libstdc++ curl
+
 RUN mkdir -p "/opt/alibaba/java-11-alibaba-dragonwell"
 
 WORKDIR /opt/alibaba/java-11-alibaba-dragonwell
@@ -46,9 +49,6 @@ ARG NACOS_VERSION=2.2.3
 ARG HOT_FIX_FLAG=""
 
 WORKDIR $BASE_DIR
-
-# 添加必备环境变量
-RUN apk add --no-cache openssl ncurses-libs libstdc++ curl
 
 # 添加nacos文件,
 # 必须使用ADD 是用COPY后在删除.tar.gz文件,镜像大小不会被删除,无缘无故多了.tar.gz同等大小的的镜像空间,暂不了解为什么
