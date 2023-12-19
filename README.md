@@ -66,6 +66,10 @@ PGSQL_PASSWORD=postgres
 
 ## 四 更新日志
 
+### v2.3.0
+
+- 更新nacos包到2.3.0版本
+
 ### v2.2.3-dragonwell
 
 - 添加了以龙威11为java jdk的2.2.3版本
