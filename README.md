@@ -75,10 +75,6 @@ PGSQL_PASSWORD=postgres
 - 添加了以龙威11为java jdk的2.2.3版本
 - 下载命令 ```docker pull yangxj96/nacos-server-pgsql:v2.2.3-dragonwell```
 
-### v2.2.3
-
-- 更新nacos包到2.2.3版本
-
 ### v2.2.2-2
 
 > 之前下载后使用大概1.1GB左右,本次更新主要为缩小镜像大小
