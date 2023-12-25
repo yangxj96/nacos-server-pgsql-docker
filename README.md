@@ -1,6 +1,21 @@
 # Nacos 的PostgreSQL版本
 
 ---
+
+当前pull:
+
+```shell
+docker pull yangxj96/nacos-server-pgsql:v2.2.3
+```
+
+或
+
+```shell
+docker pull ghcr.io/yangxj96/nacos-server-pgsql:v2.2.3
+```
+
+
+---
 [原版Nacos链接](https://hub.docker.com/r/nacos/nacos-server)
 
 具体的变量内容查看原版即可,只是我这边新增了几个变量 
