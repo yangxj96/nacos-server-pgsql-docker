@@ -5,13 +5,13 @@
 当前pull:
 
 ```shell
-docker pull yangxj96/nacos-server-pgsql:v2.2.3
+docker pull yangxj96/nacos-server-pgsql:v2.3.2
 ```
 
 或
 
 ```shell
-docker pull ghcr.io/yangxj96/nacos-server-pgsql:v2.2.3
+docker pull ghcr.io/yangxj96/nacos-server-pgsql:v2.3.2
 ```
 
 
@@ -48,14 +48,14 @@ docker pull ghcr.io/yangxj96/nacos-server-pgsql:v2.2.3
 version: "3"
 services:
   nacos:
-    image: yangxj96/nacos-service-pgsql:v2.2.3
+    image: yangxj96/nacos-service-pgsql:v2.3.2
     container_name: nacos-pgsql
     privileged: true
     env_file:
-      - "/Nacos/env/pgsql.env"
+      - "/nacos/env/pgsql.env"
     network_mode: host
     volumes:
-      - "/Nacos/logs/:/home/nacos/logs"
+      - "/nacos/logs/:/home/nacos/logs"
 ```
 
 #### pgsql.env
@@ -95,6 +95,10 @@ PGSQL_PASSWORD=postgres
 不能用容器名或者ip访问到其他的容器或者主机的ip
 
 ## 四 更新日志
+
+### v2.3.2
+
+> 升级nacos到2.3.2版本
 
 ### ~~v2.3.0~~
 
